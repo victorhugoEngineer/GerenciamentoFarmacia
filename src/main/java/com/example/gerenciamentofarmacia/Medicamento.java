@@ -1,17 +1,21 @@
 package com.example.gerenciamentofarmacia;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
+/** Medicamento do estoque. Compõe um {@link Fornecedor}. */
 public class Medicamento {
-    private String codigo;
-    private String nome;
-    private String descricao;
-    private String principioAtivo;
-    private LocalDate dataValidade;
-    private int quantidadeEstoque;
-    private BigDecimal preco;
-    private boolean controlado;
-    private Fornecedor fornecedor;
+
+    private final String codigo;
+    private final String nome;
+    private final String descricao;
+    private final String principioAtivo;
+    private final LocalDate dataValidade;
+    private final int quantidadeEstoque;
+    private final BigDecimal preco;
+    private final boolean controlado;
+    private final Fornecedor fornecedor;
 
     public Medicamento(String codigo, String nome, String descricao, String principioAtivo,
                        LocalDate dataValidade, int quantidadeEstoque, BigDecimal preco,
@@ -27,31 +31,36 @@ public class Medicamento {
         this.fornecedor = fornecedor;
     }
 
-    // Getters e Setters
     public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-
     public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-
     public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) { this.descricao = descricao; }
-
     public String getPrincipioAtivo() { return principioAtivo; }
-    public void setPrincipioAtivo(String principioAtivo) { this.principioAtivo = principioAtivo; }
-
     public LocalDate getDataValidade() { return dataValidade; }
-    public void setDataValidade(LocalDate dataValidade) { this.dataValidade = dataValidade; }
-
     public int getQuantidadeEstoque() { return quantidadeEstoque; }
-    public void setQuantidadeEstoque(int quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
-
     public BigDecimal getPreco() { return preco; }
-    public void setPreco(BigDecimal preco) { this.preco = preco; }
-
     public boolean isControlado() { return controlado; }
-    public void setControlado(boolean controlado) { this.controlado = controlado; }
-
     public Fornecedor getFornecedor() { return fornecedor; }
-    public void setFornecedor(Fornecedor fornecedor) { this.fornecedor = fornecedor; }
+
+    /** Valor total em estoque deste item (preço x quantidade). */
+    public BigDecimal getValorEstoque() {
+        return preco.multiply(BigDecimal.valueOf(quantidadeEstoque));
+    }
+
+    // Atalhos usados pelas colunas da TableView
+    public String getFornecedorNome() { return fornecedor.getRazaoSocial(); }
+    public String getControladoTexto() { return controlado ? "Sim" : "Não"; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Medicamento m = (Medicamento) o;
+        return Objects.equals(codigo, m.codigo);
+    }
+
+    @Override
+    public int hashCode() { return Objects.hash(codigo); }
+
+    @Override
+    public String toString() { return codigo + " - " + nome; }
 }

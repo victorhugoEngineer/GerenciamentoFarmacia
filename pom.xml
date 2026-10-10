@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.example.gerenciamentofarmacia/com.example.gerenciamentofarmacia.HelloApplication
+                                com.example.gerenciamentofarmacia/com.example.gerenciamentofarmacia.FarmaciaApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

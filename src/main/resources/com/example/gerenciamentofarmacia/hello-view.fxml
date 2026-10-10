@@ -1,23 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.DialogPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<ButtonBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26">
-  <buttons>
-      <DialogPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="480.0">
-          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
-          </content>
-          <expandableContent>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
-          </expandableContent>
-      </DialogPane>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="texte" />
-    <Button mnemonicParsing="false" text="Button" />
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="320.0" />
-  </buttons>
-</ButtonBar>
+<TabPane tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="com.example.gerenciamentofarmacia.FarmaciaController">
+    <tabs>
+
+        <!-- ===================== ABA 1: MEDICAMENTOS ===================== -->
+        <Tab text="Medicamentos">
+            <BorderPane>
+                <padding>
+                    <Insets bottom="12" left="12" right="12" top="12"/>
+                </padding>
+
+                <!-- Formulário de cadastro -->
+                <left>
+                    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="360">
+                        <VBox spacing="8">
+                            <padding>
+                                <Insets right="12"/>
+                            </padding>
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Novo medicamento"/>
+                            <GridPane hgap="8" vgap="6">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100"/>
+                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                </columnConstraints>
+                                <Label text="Código*" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtCodigo" promptText="7 alfanuméricos (MED0001)"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <Label text="Nome*" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label text="Descrição*" GridPane.rowIndex="2"/>
+                                <TextField fx:id="txtDescricao" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="Princípio ativo*" GridPane.rowIndex="3"/>
+                                <TextField fx:id="txtPrincipioAtivo" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <Label text="Validade*" GridPane.rowIndex="4"/>
+                                <DatePicker fx:id="dpValidade" maxWidth="Infinity"
+                                            GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <Label text="Quantidade*" GridPane.rowIndex="5"/>
+                                <Spinner fx:id="spQuantidade" editable="true" maxWidth="Infinity"
+                                         GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                <Label text="Preço (R$)*" GridPane.rowIndex="6"/>
+                                <TextField fx:id="txtPreco" promptText="ex.: 12,50"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+                                <CheckBox fx:id="chkControlado" text="Medicamento controlado"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+                            </GridPane>
+
+                            <Separator/>
+                            <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="Fornecedor"/>
+                            <GridPane hgap="8" vgap="6">
+                                <columnConstraints>
+                                    <ColumnConstraints minWidth="100"/>
+                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                </columnConstraints>
+                                <Label text="CNPJ*" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtCnpj" promptText="00.000.000/0000-00"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <Label text="Razão social*" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtRazaoSocial" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label text="Telefone*" GridPane.rowIndex="2"/>
+                                <TextField fx:id="txtTelefone" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="E-mail*" GridPane.rowIndex="3"/>
+                                <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <Label text="Cidade*" GridPane.rowIndex="4"/>
+                                <TextField fx:id="txtCidade" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                                <Label text="Estado (UF)*" GridPane.rowIndex="5"/>
+                                <TextField fx:id="txtEstado" promptText="GO"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                            </GridPane>
+
+                            <HBox spacing="8">
+                                <Button defaultButton="true" onAction="#aoCadastrar" text="Cadastrar"/>
+                                <Button onAction="#aoLimpar" text="Limpar"/>
+                            </HBox>
+                        </VBox>
+                    </ScrollPane>
+                </left>
+
+                <!-- Busca + tabela -->
+                <center>
+                    <VBox spacing="8">
+                        <padding>
+                            <Insets left="12"/>
+                        </padding>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                            <Label text="Consultar por código:"/>
+                            <TextField fx:id="txtBusca" onAction="#aoConsultar" prefWidth="160"
+                                       promptText="ex.: MED0001"/>
+                            <Button onAction="#aoConsultar" text="Consultar"/>
+                            <Button onAction="#aoListarTodos" text="Listar todos"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button onAction="#aoExcluir" text="Excluir selecionado"/>
+                        </HBox>
+
+                        <TableView fx:id="tabela" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colCodigo" prefWidth="80" text="Código"/>
+                                <TableColumn fx:id="colNome" prefWidth="140" text="Nome"/>
+                                <TableColumn fx:id="colPrincipioAtivo" prefWidth="120" text="Princípio ativo"/>
+                                <TableColumn fx:id="colValidade" prefWidth="90" text="Validade"/>
+                                <TableColumn fx:id="colQuantidade" prefWidth="55" text="Qtd."/>
+                                <TableColumn fx:id="colPreco" prefWidth="80" text="Preço"/>
+                                <TableColumn fx:id="colControlado" prefWidth="80" text="Controlado"/>
+                                <TableColumn fx:id="colFornecedor" prefWidth="150" text="Fornecedor"/>
+                            </columns>
+                        </TableView>
+
+                        <Label fx:id="lblStatus" style="-fx-text-fill: #555;"/>
+                    </VBox>
+                </center>
+            </BorderPane>
+        </Tab>
+
+        <!-- ===================== ABA 2: RELATÓRIOS ===================== -->
+        <Tab text="Relatórios">
+            <BorderPane>
+                <padding>
+                    <Insets bottom="12" left="12" right="12" top="12"/>
+                </padding>
+                <top>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <padding>
+                            <Insets bottom="8"/>
+                        </padding>
+                        <Button onAction="#aoGerarRelatorio" text="Gerar relatório completo"/>
+                        <Button onAction="#aoRelatorioVencimento" text="Próximos ao vencimento"/>
+                        <Button onAction="#aoRelatorioEstoqueBaixo" text="Estoque baixo"/>
+                        <Button onAction="#aoRelatorioFornecedor" text="Valor por fornecedor"/>
+                        <Button onAction="#aoRelatorioControlados" text="Controlados x não controlados"/>
+                    </HBox>
+                </top>
+                <center>
+                    <TextArea fx:id="txtRelatorio" editable="false"
+                              style="-fx-font-family: 'Monospaced'; -fx-font-size: 13px;"/>
+                </center>
+            </BorderPane>
+        </Tab>
+
+    </tabs>
+</TabPane>
