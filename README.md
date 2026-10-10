@@ -1,106 +1,67 @@
-💊 Gerenciamento de Farmácia
+# 💊 Sistema de Gerenciamento de Farmácia (GerenciamentoFarmacia)
 
-Sistema desenvolvido em Java para auxiliar no gerenciamento do estoque de medicamentos de uma farmácia, com foco na organização e no controle dos produtos.
+[![Java](https://img.shields.io/badge/Java-11%2B-orange.svg)](https://www.oracle.com/java/)
+[![JavaFX](https://img.shields.io/badge/JavaFX-17-blue.svg)](https://openjfx.io/)
+[![Build Tool](https://img.shields.io/badge/Maven-3.x-red.svg)](https://maven.apache.org/)
+[![License](https://img.shields.io/badge/License-MIT--Style-green.svg)](#licença)
 
-📋 Sobre o projeto
+Uma aplicação desktop robusta desenvolvida em **Java** e **JavaFX**, destinada à gestão automatizada de estoque, controle de medicamentos e integração de dados de fornecedores no setor farmacêutico.
 
-O GerenciamentoFarmacia é uma aplicação desktop desenvolvida com JavaFX, voltada para o gerenciamento de medicamentos em um ambiente farmacêutico.
+---
 
-O projeto utiliza Maven para gerenciar dependências e automatizar tarefas de compilação, além de JavaFX para o desenvolvimento da interface gráfica.
+## 📌 Visão Geral
 
-🎯 Objetivos
-Facilitar a organização do estoque de medicamentos.
-Apoiar o gerenciamento de produtos farmacêuticos.
-Desenvolver uma aplicação desktop utilizando Java.
-Aplicar conceitos de programação orientada a objetos e desenvolvimento de interfaces gráficas.
-🛠️ Tecnologias utilizadas
-Java 11 — linguagem de programação.
-JavaFX 17 — desenvolvimento da interface gráfica.
-FXML — estruturação de interfaces.
-Apache Maven — gerenciamento de dependências e compilação.
-JUnit 5 — suporte à criação de testes automatizados.
-Git e GitHub — versionamento e hospedagem do código-fonte.
-⚙️ Pré-requisitos
+O **GerenciamentoFarmacia** oferece uma solução integrada para simplificar os processos operacionais de controle de estoque em drogarias e farmácias. A aplicação combina uma interface gráfica intuitiva com recursos avançados de auditoria e relatórios em tempo real, auxiliando na redução de perdas por validade e no controle rigoroso de medicamentos sujeitos a regulamentação especial.
 
-Antes de executar o projeto, certifique-se de ter instalado:
+---
 
-JDK 11 ou compatível
-Apache Maven (opcional, caso utilize o Maven Wrapper incluído no projeto).
-Git
-🚀 Como executar o projeto
-1. Clone o repositório
-git clone https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git
+## ✨ Funcionalidades Principais
 
-2. Acesse a pasta do projeto
+- **Gestão de Medicamentos (CRUD Complete):**
+  - Cadastro, exclusão, consulta detalhada e listagem de produtos.
+  - Registro de atributos essenciais: código, nome comercial, descrição, princípio ativo, preço unitário e tipo (controlado/não controlado).
+  
+- **Gestão Integrada de Fornecedores:**
+  - Associação direta entre o medicamento e a razão social, CNPJ (com formatação automática) e dados de contato do fornecedor.
+
+- **Módulo de Análise e Relatórios (Java Streams API):**
+  - **Próximos ao Vencimento:** Monitoramento preventivo de lote com alerta para produtos que vencem nos próximos 30 dias.
+  - **Estoque Baixo:** Alerta automático para itens com estoque abaixo do limite de segurança (menos de 5 unidades).
+  - **Valoração de Estoque por Fornecedor:** Cálculo dinâmico do valor monetário total armazenado.
+  - **Segregação por Regulamentação:** Filtro analítico entre medicamentos de controle especial e de venda livre.
+
+- **Persistência Segura e Tolerante a Falhas:**
+  - Armazenamento em arquivo plano CSV com suporte a escrita atômica via arquivo temporário (evitando corrupção de dados em eventuais interrupções de execução).
+
+---
+
+## 🛠️ Tecnologias e Dependências
+
+- **Linguagem:** Java 11+
+- **Interface Gráfica (GUI):** JavaFX 17 (estruturado em FXML / CSS)
+- **Gerenciador de Dependências e Build:** Apache Maven
+- **Testes Unitários:** JUnit 5
+- **Controle de Versão:** Git & GitHub
+
+---
+
+## 🏗️ Arquitetura do Sistema
+
+A aplicação foi estruturada seguindo boas práticas de Orientação a Objetos e o padrão arquitetural **MVC (Model-View-Controller)** com camada de serviço desacoplada:
+
+## 📋 Pré-requisitos
+
+Antes de iniciar, certifique-se de ter os seguintes componentes configurados no seu ambiente:
+
+- **Java Development Kit (JDK):** Versão 11 ou superior configurada na variável `JAVA_HOME`.
+- **Git:** Para clonar o repositório.
+- *(Opcional)* **Apache Maven:** Não obrigatório, pois o projeto inclui o **Maven Wrapper (`mvnw`)**.
+
+---
+
+## 🚀 Instruções de Execução
+
+### 1. Clonar o Repositório
+```bash
+git clone [https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git](https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git)
 cd GerenciamentoFarmacia
-
-3. Execute a aplicação
-
-No Linux ou macOS:
-
-./mvnw clean javafx:run
-
-
-No Windows:
-
-mvnw.cmd clean javafx:run
-
-
-Caso tenha o Maven instalado globalmente, você também pode executar:
-
-mvn clean javafx:run
-
-
-O Maven irá compilar o projeto, resolver as dependências e iniciar a aplicação JavaFX.
-
-📁 Estrutura do projeto
-GerenciamentoFarmacia/
-├── .mvn/
-│   └── wrapper/
-├── src/
-│   └── main/
-├── pom.xml
-├── mvnw
-├── mvnw.cmd
-└── README.md
-
-src/main/ — código-fonte principal da aplicação.
-.mvn/wrapper/ — arquivos de configuração do Maven Wrapper.
-pom.xml — dependências e configurações de compilação.
-mvnw — script para execução do Maven em Linux e macOS.
-mvnw.cmd — script para execução do Maven no Windows.
-🧪 Testes
-
-O projeto possui dependências do JUnit 5 para a implementação de testes automatizados.
-
-Para executar os testes configurados:
-
-./mvnw test
-
-
-No Windows:
-
-mvnw.cmd test
-
-🔮 Possíveis melhorias futuras
-Implementação de cadastro, edição e exclusão de medicamentos.
-Controle de quantidades disponíveis em estoque.
-Alertas para medicamentos próximos do vencimento.
-Pesquisa e filtragem de produtos.
-Relatórios de estoque.
-Persistência de dados em banco de dados.
-Aprimoramento da interface gráfica.
-
-As funcionalidades acima representam sugestões de evolução e não necessariamente estão implementadas na versão atual.
-
-👨‍💻 Autor
-
-Victor Hugo Engineer
-
-GitHub: @victorhugoEngineer
-Repositório: GerenciamentoFarmacia
-📄 Licença
-
-Este projeto está disponível para fins de estudo e desenvolvimento. Consulte as informações de licenciamento do repositório antes de utilizá-lo ou redistribuí-lo.
-
-⭐ Se este projeto foi útil para você, considere deixar uma estrela no repositório!
