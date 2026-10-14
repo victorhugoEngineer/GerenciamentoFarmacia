@@ -1,5 +1,5 @@
 package com.example.gerenciamentofarmacia;
-
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -102,6 +102,6 @@ public class MedicamentoService {
                         m -> m.getNome() != null ? m.getNome() : "",
                         String.CASE_INSENSITIVE_ORDER
                 ))
-                .toList(); // Corrigido: .toList() em vez de .Stream()
+                .collect(Collectors.toList());
     }
 }
