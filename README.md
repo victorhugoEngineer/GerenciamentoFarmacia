@@ -12,7 +12,7 @@ Aplicação desktop desenvolvida em **Java** e **JavaFX** para auxiliar no geren
 ## 📸 Interface do Sistema
 
 <p align="center">
-  <img src="docs/tela-principal.png" alt="Tela Principal do Sistema de Gerenciamento de Farmácia" width="850"/>
+  <img src="URL_GERADA_PELO_GITHUB" alt="Tela Principal do Sistema de Gerenciamento de Farmácia" width="850"/>
 </p>
 
 
@@ -62,7 +62,7 @@ O **GerenciamentoFarmacia** visa solucionar desafios comuns no controle de inven
 
 | Tecnologia | Finalidade |
 | :--- | :--- |
-| **Java 11+** | Linguagem principal para regras de negócio e orientação a objetos. |
+| **Java 21+** | Linguagem principal para regras de negócio e orientação a objetos. |
 | **JavaFX 17** | Construção da interface gráfica (GUI). |
 | **Apache Maven** | Gerenciamento de dependências e automação do build. |
 | **CSV** | Persistência de dados leve e portátil sem dependência de banco externo. |
