@@ -12,7 +12,7 @@ Aplicação desktop desenvolvida em **Java** e **JavaFX** para auxiliar no geren
 ## 📸 Interface do Sistema
 
 <p center>
-  <img src="docs/interface.png" alt="Tela Principal do Sistema de Gerenciamento de Farmácia" width="850"/>
+  <img src="docs/![](../../../Pictures/Screenshots/Captura de tela 2026-10-16 185248.png)interface.png" alt="Tela Principal do Sistema de Gerenciamento de Farmácia" width="850"/>
 </p>
 
 ---
