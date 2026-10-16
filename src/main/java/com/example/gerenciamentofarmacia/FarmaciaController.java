@@ -96,23 +96,26 @@ public class FarmaciaController {
     }
 
     @FXML
-    private void aoExcluir() {
+    public void aoExcluir() {
+        // 1. Obtém o item selecionado na tabela
         Medicamento selecionado = tabela.getSelectionModel().getSelectedItem();
+
+        // 2. Valida se o usuário realmente selecionou uma linha
         if (selecionado == null) {
-            Dialogos.erro("Nada selecionado", "Selecione um medicamento na tabela para excluir.");
+            lblStatus.setText("Selecione um medicamento na tabela para excluir.");
             return;
         }
-        if (!Dialogos.confirmar("Confirmar exclusão", "Excluir o medicamento " + selecionado + "?")) return;
 
         try {
+            // 3. Remove via Service (que remove da memória e regrava o CSV)
             service.excluir(selecionado.getCodigo());
+
+            // 4. Atualiza a visualização da tabela e status
             aoListarTodos();
-            aoGerarRelatorio();
-            status("Medicamento " + selecionado.getCodigo() + " excluído.");
-        } catch (ValidacaoException e) {
-            Dialogos.erro("Não foi possível excluir", e.getMessage());
-        } catch (IOException e) {
-            Dialogos.erro("Erro ao gravar o arquivo", e.getMessage());
+            lblStatus.setText("Medicamento " + selecionado.getCodigo() + " excluído com sucesso.");
+
+        } catch (Exception e) {
+            lblStatus.setText("Erro ao excluir medicamento: " + e.getMessage());
         }
     }
 

@@ -1,13 +1,13 @@
 package com.example.gerenciamentofarmacia;
-import java.util.stream.Collectors;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-/** Regras do CRUD: valida, mantém a lista em memória e persiste após cada operação. */
 public class MedicamentoService {
 
     private final MedicamentoRepository repositorio;
@@ -26,7 +26,8 @@ public class MedicamentoService {
         }
     }
 
-    public void cadastrar(Medicamento novo) throws ValidacaoException, IOException {
+    /** Cadastra um novo medicamento e grava no repositório. */
+    public synchronized void cadastrar(Medicamento novo) throws ValidacaoException, IOException {
         if (novo == null) {
             throw new ValidacaoException("O medicamento não pode ser nulo.");
         }
@@ -34,20 +35,20 @@ public class MedicamentoService {
         Validador.validar(novo);
 
         if (buscarPorCodigo(novo.getCodigo()).isPresent()) {
-            throw new ValidacaoException("Já existe um medicamento com o código " + novo.getCodigo() + ".");
+            throw new ValidacaoException("Já existe um medicamento cadastrado com o código " + novo.getCodigo() + ".");
         }
 
         medicamentos.add(novo);
         try {
             repositorio.salvar(medicamentos);
         } catch (IOException e) {
-            medicamentos.remove(novo); // Desfaz para manter memória e arquivo coerentes
+            medicamentos.remove(novo); // Rollback se der erro ao salvar no arquivo
             throw e;
         }
     }
 
-    /** Atualiza um medicamento existente mantendo o mesmo código. */
-    public void atualizar(Medicamento atualizado) throws ValidacaoException, IOException {
+    /** Atualiza um medicamento existente mantendo o código. */
+    public synchronized void atualizar(Medicamento atualizado) throws ValidacaoException, IOException {
         if (atualizado == null) {
             throw new ValidacaoException("O medicamento não pode ser nulo.");
         }
@@ -55,7 +56,7 @@ public class MedicamentoService {
         Validador.validar(atualizado);
 
         Medicamento existente = buscarPorCodigo(atualizado.getCodigo())
-                .orElseThrow(() -> new ValidacaoException("Medicamento " + atualizado.getCodigo() + " não encontrado para atualização."));
+                .orElseThrow(() -> new ValidacaoException("Medicamento " + atualizado.getCodigo() + " não encontrado."));
 
         int posicao = medicamentos.indexOf(existente);
         medicamentos.set(posicao, atualizado);
@@ -63,12 +64,13 @@ public class MedicamentoService {
         try {
             repositorio.salvar(medicamentos);
         } catch (IOException e) {
-            medicamentos.set(posicao, existente); // Rollback da alteração em caso de erro no I/O
+            medicamentos.set(posicao, existente); // Rollback
             throw e;
         }
     }
 
-    public void excluir(String codigo) throws ValidacaoException, IOException {
+    /** Remove um medicamento pelo código. */
+    public synchronized void excluir(String codigo) throws ValidacaoException, IOException {
         Medicamento existente = buscarPorCodigo(codigo)
                 .orElseThrow(() -> new ValidacaoException("Medicamento " + codigo + " não encontrado."));
 
@@ -94,7 +96,7 @@ public class MedicamentoService {
                 .findFirst();
     }
 
-    /** Todos os medicamentos, ordenados por nome. */
+    /** Todos os medicamentos cadastrados, ordenados por nome. */
     public List<Medicamento> listar() {
         return medicamentos.stream()
                 .filter(Objects::nonNull)

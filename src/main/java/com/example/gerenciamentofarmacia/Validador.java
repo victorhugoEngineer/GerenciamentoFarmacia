@@ -1,6 +1,5 @@
 package com.example.gerenciamentofarmacia;
 
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import java.util.regex.Pattern;
 /** Regras de validação do domínio. Coleta todos os erros de uma vez. */
 public final class Validador {
 
-    /** Código: exatamente 7 caracteres alfanuméricos (ex.: MED0001). */
-    private static final Pattern CODIGO = Pattern.compile("^[A-Za-z0-9]{7}$");
+    /** Código: de 3 a 10 caracteres alfanuméricos (ex.: MED001 ou MED0001). */
+    private static final Pattern CODIGO = Pattern.compile("^[A-Za-z0-9]{3,10}$");
     private static final Pattern EMAIL = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
     private static final Pattern UF = Pattern.compile("^[A-Za-z]{2}$");
     public static final int NOME_MINIMO = 3;
@@ -22,7 +21,7 @@ public final class Validador {
         List<String> erros = new ArrayList<>();
 
         if (m.getCodigo() == null || !CODIGO.matcher(m.getCodigo()).matches())
-            erros.add("Código deve ter exatamente 7 caracteres alfanuméricos (ex.: MED0001).");
+            erros.add("Código deve conter entre 3 e 10 caracteres alfanuméricos (ex.: MED0001).");
 
         if (m.getNome() == null || m.getNome().trim().length() < NOME_MINIMO)
             erros.add("Nome é obrigatório e deve ter ao menos " + NOME_MINIMO + " caracteres.");

@@ -20,15 +20,15 @@ public class Medicamento {
     public Medicamento(String codigo, String nome, String descricao, String principioAtivo,
                        LocalDate dataValidade, int quantidadeEstoque, BigDecimal preco,
                        boolean controlado, Fornecedor fornecedor) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.principioAtivo = principioAtivo;
+        this.codigo = codigo != null ? codigo.trim() : "";
+        this.nome = nome != null ? nome.trim() : "";
+        this.descricao = descricao != null ? descricao.trim() : "";
+        this.principioAtivo = principioAtivo != null ? principioAtivo.trim() : "";
         this.dataValidade = dataValidade;
-        this.quantidadeEstoque = quantidadeEstoque;
-        this.preco = preco;
+        this.quantidadeEstoque = Math.max(0, quantidadeEstoque);
+        this.preco = preco != null ? preco : BigDecimal.ZERO;
         this.controlado = controlado;
-        this.fornecedor = fornecedor;
+        this.fornecedor = fornecedor != null ? fornecedor : new Fornecedor("", "", "", "", "", "");
     }
 
     public String getCodigo() { return codigo; }
@@ -47,7 +47,10 @@ public class Medicamento {
     }
 
     // Atalhos usados pelas colunas da TableView
-    public String getFornecedorNome() { return fornecedor.getRazaoSocial(); }
+    public String getFornecedorNome() {
+        return (fornecedor != null && fornecedor.getRazaoSocial() != null) ? fornecedor.getRazaoSocial() : "";
+    }
+
     public String getControladoTexto() { return controlado ? "Sim" : "Não"; }
 
     @Override
@@ -55,11 +58,13 @@ public class Medicamento {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Medicamento m = (Medicamento) o;
-        return Objects.equals(codigo, m.codigo);
+        return Objects.equals(codigo.toUpperCase(), m.codigo.toUpperCase());
     }
 
     @Override
-    public int hashCode() { return Objects.hash(codigo); }
+    public int hashCode() {
+        return Objects.hash(codigo.toUpperCase());
+    }
 
     @Override
     public String toString() { return codigo + " - " + nome; }
