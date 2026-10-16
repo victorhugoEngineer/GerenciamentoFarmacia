@@ -1,4 +1,4 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

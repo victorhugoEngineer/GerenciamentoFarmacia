@@ -1,4 +1,4 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

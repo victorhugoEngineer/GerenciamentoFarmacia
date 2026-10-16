@@ -1,4 +1,4 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.validation;
 
 import java.util.List;
 

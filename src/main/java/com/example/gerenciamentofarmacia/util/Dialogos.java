@@ -1,5 +1,6 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.util;
 
+import com.example.gerenciamentofarmacia.controller.DialogoController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;

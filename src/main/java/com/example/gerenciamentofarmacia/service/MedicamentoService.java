@@ -1,4 +1,9 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.service;
+
+import com.example.gerenciamentofarmacia.model.Medicamento;
+import com.example.gerenciamentofarmacia.validation.ValidacaoException;
+import com.example.gerenciamentofarmacia.validation.Validador;
+import com.example.gerenciamentofarmacia.repository.MedicamentoRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;

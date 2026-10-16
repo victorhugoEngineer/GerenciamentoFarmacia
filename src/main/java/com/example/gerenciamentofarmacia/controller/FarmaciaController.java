@@ -1,5 +1,13 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.controller;
 
+import com.example.gerenciamentofarmacia.util.Dialogos;
+import com.example.gerenciamentofarmacia.model.Fornecedor;
+import com.example.gerenciamentofarmacia.model.Medicamento;
+import com.example.gerenciamentofarmacia.repository.MedicamentoRepository;
+import com.example.gerenciamentofarmacia.service.MedicamentoService;
+import com.example.gerenciamentofarmacia.service.RelatorioService;
+import com.example.gerenciamentofarmacia.validation.ValidacaoException;
+import com.example.gerenciamentofarmacia.validation.Validador;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

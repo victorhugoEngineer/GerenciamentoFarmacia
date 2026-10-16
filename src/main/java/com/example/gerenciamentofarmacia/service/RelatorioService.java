@@ -1,4 +1,6 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.service;
+
+import com.example.gerenciamentofarmacia.model.Medicamento;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

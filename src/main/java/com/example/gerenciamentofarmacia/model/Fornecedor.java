@@ -1,4 +1,4 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.model;
 
 import java.util.Objects;
 
@@ -6,9 +6,6 @@ import java.util.Objects;
  * Representa um fornecedor de medicamentos.
  * O CNPJ é guardado apenas com dígitos.
  */
-
-
-        import java.util.Objects;
 
 public class Fornecedor {
 

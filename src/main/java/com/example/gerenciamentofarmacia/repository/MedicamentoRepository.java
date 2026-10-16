@@ -1,4 +1,7 @@
-package com.example.gerenciamentofarmacia;
+package com.example.gerenciamentofarmacia.repository;
+
+import com.example.gerenciamentofarmacia.model.Fornecedor;
+import com.example.gerenciamentofarmacia.model.Medicamento;
 
 import java.io.IOException;
 import java.math.BigDecimal;
