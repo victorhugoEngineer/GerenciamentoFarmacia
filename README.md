@@ -12,9 +12,8 @@ Aplicação desktop desenvolvida em **Java** e **JavaFX** para auxiliar no geren
 ## 📸 Interface do Sistema
 
 <p align="center">
-  <img src="URL_GERADA_PELO_GITHUB" alt="Tela Principal do Sistema de Gerenciamento de Farmácia" width="850"/>
+ <img width="1145" height="705" alt="Captura de tela 2026-10-16 185248" src="https://github.com/user-attachments/assets/4770300a-ce66-45dc-8539-7159981c28b8" />
 </p>
-
 
 ---
 
@@ -41,20 +40,24 @@ O **GerenciamentoFarmacia** visa solucionar desafios comuns no controle de inven
 ## ✨ Funcionalidades
 
 ### 💊 Gestão de Medicamentos
-- **Cadastro Completo:** Registro de código alfanumérico, nome, descrição, princípio ativo, data de validade, quantidade, preço unitário e indicação de medicamento controlado.
-- **Consulta por Código:** Pesquisa rápida de medicamentos cadastrados.
-- **Listagem Dinâmica:** Exibição em tabela com atualização instantânea das informações.
-- **Exclusão com Confirmação:** Remoção de registros selecionados sincronizada diretamente no armazenamento.
+- **Cadastro Completo:** Registro de código alfanumérico (3 a 10 caracteres), nome, descrição, princípio ativo, data de validade, quantidade, preço unitário e indicação de medicamento controlado.
+- **Consulta por Código:** Pesquisa rápida e insensível a maiúsculas/minúsculas de medicamentos cadastrados.
+- **Listagem Dinâmica:** Exibição em tabela (`TableView`) com ordenação automática por nome e atualização instantânea das informações.
+- **Exclusão Sincronizada:** Remoção de registros selecionados na interface com reflexo imediato no arquivo de persistência.
+- **Validação de Formulário:** Validação rigorosa de campos obrigatórios, datas de validade futuras, valores positivos e formatação correta de preços.
 
 ### 🏢 Gestão de Fornecedores
 - Associação direta de cada medicamento ao seu fornecedor responsável.
-- Armazenamento de CNPJ (com verificação dos dígitos verificadores), Razão Social, Telefone, E-mail, Cidade e Estado (UF com 2 letras).
+- Armazenamento de CNPJ (com verificação dos dígitos verificadores via módulo 11), Razão Social, Telefone, E-mail, Cidade e Estado (sigla da UF com exatamente 2 letras).
 
-### 📊 Módulo de Relatórios Gerenciais
-- **Próximos ao Vencimento:** Filtra medicamentos com vencimento previsto para os próximos 30 dias.
-- **Estoque Baixo:** Alerta para produtos com menos de 5 unidades em estoque.
-- **Valor por Fornecedor:** Calcula o valor financeiro investido por fornecedor (Preço × Quantidade).
-- **Filtro de Controlados:** Separação e análise de medicamentos sob controle especial.
+---
+
+## 📊 Módulo de Relatórios Gerenciais
+
+- **Próximos ao Vencimento:** Filtra e lista medicamentos com data de vencimento prevista para os próximos 30 dias a partir da data atual.
+- **Estoque Baixo:** Identifica e exibe alertas para produtos com quantidade em estoque abaixo do limite mínimo (ex.: menos de 5 unidades).
+- **Valor por Fornecedor:** Agrupa e calcula o valor financeiro total investido no estoque segregado por fornecedor ($\text{Preço Unitário} \times \text{Quantidade}$).
+- **Filtro de Controlados:** Isola e apresenta medicamentos sujeitos a controle especial para auditoria e prestação de contas.
 
 ---
 
@@ -63,7 +66,7 @@ O **GerenciamentoFarmacia** visa solucionar desafios comuns no controle de inven
 | Tecnologia | Finalidade |
 | :--- | :--- |
 | **Java 21+** | Linguagem principal para regras de negócio e orientação a objetos. |
-| **JavaFX 17** | Construção da interface gráfica (GUI). |
+| **JavaFX 17** | Construção da interface gráfica do usuário (GUI). |
 | **Apache Maven** | Gerenciamento de dependências e automação do build. |
 | **CSV** | Persistência de dados leve e portátil sem dependência de banco externo. |
 | **Git & GitHub** | Controle de versão e hospedagem de código. |
@@ -72,4 +75,83 @@ O **GerenciamentoFarmacia** visa solucionar desafios comuns no controle de inven
 
 ## 🏗️ Arquitetura e Organização do Código
 
-O projeto adota o padrão de arquitetura em camadas (**MVC / Layered Architecture**), separando responsabilidades de forma clara:
+O projeto adota o padrão de arquitetura em camadas (**MVC / Layered Architecture**), promovendo alta coesão e baixo acoplamento:
+
+```text
+com.example.gerenciamentofarmacia
+├── controller/          # Controladores JavaFX (FarmaciaController, DialogoController)
+├── model/               # Modelos do domínio (Medicamento, Fornecedor)
+├── repository/          # Camada de acesso a dados e arquivo CSV (MedicamentoRepository)
+├── service/             # Regras de negócio e relatórios (MedicamentoService, RelatorioService)
+├── validation/          # Validações de domínio e exceções (Validador, ValidacaoException)
+├── util/                # Utilitários de interface e caixas de diálogo (Dialogos)
+├── FarmaciaApplication  # Classe principal de inicialização do JavaFX
+└── module-info.java     # Configuração de módulos Java
+
+# 💊 Gerenciamento de Farmácia
+
+Uma aplicação desenvolvida em Java com JavaFX e Maven para o controle e gerenciamento de estoque de medicamentos.
+
+---
+
+## 🚀 Como Executar
+
+Siga os passos abaixo para clonar, compilar e rodar o projeto em sua máquina local:
+
+### 1. Clonar o repositório
+Abra o seu terminal e execute os comandos:
+```bash
+git clone https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git
+cd GerenciamentoFarmacia
+```
+
+### 2. Compilar e construir o projeto
+Certifique-se de ter o Maven instalado e execute:
+```bash
+mvn clean compile
+```
+
+### 3. Executar a aplicação
+Para iniciar o projeto via linha de comando, utilize:
+```bash
+mvn javafx:run
+```
+
+> 💡 **Alternativa:** Se preferir, você pode executar a classe `FarmaciaApplication.java` diretamente por meio da sua IDE de preferência (IntelliJ, Eclipse, VS Code, etc.).
+
+---
+
+## 💾 Persistência e Regras de Integridade de Dados
+
+O sistema gerencia o armazenamento de informações de forma local e simplificada, seguindo diretrizes rígidas de padronização e persistência:
+
+### ⚙️ Características do Arquivo
+* **Armazenamento:** Os dados são persistidos localmente em um arquivo CSV estruturado no caminho `dados/medicamentos.csv`.
+* **Formatação:** Utiliza-se o ponto e vírgula (`;`) como delimitador de campos, assegurando a compatibilidade com caracteres acentuados da língua portuguesa e a formatação correta de valores decimais.
+* **Concorrência e Tolerância a Falhas:** As operações de escrita são sincronizadas (`synchronized`), contando com um mecanismo de *rollback* em memória para mitigar inconsistências em caso de falhas de I/O.
+* **Sanitização de Strings:** O sistema realiza a higienização automática dos campos de texto para impedir quebras de linha acidentais ou conflitos com o caractere delimitador.
+
+### 🛡️ Regras de Validação e Consistência (Campos Obrigatórios)
+Para garantir a integridade do banco de dados em formato CSV, o sistema aplica as seguintes restrições no momento da inserção:
+
+1. **Unicidade do Identificador:** O código do produto funciona como chave primária, sendo obrigatório que cada registro possua um código único e exclusivo.
+2. **Preenchimento Manual do Validador:** O campo validador deve ser inserido estritamente de forma manual pelo usuário para evitar falhas de processamento e inconsistências lógicas no sistema.
+3. **Formatação de CNPJ:** O cadastro exige a inserção do CNPJ seguindo estritamente a máscara padrão de formatação (ex: `00.000.000/0000-00`).
+4. **Restrição de Localidade (UF):** O campo correspondente à Unidade Federativa (UF) aceita exclusivamente a sigla do estado composta por exatamente duas letras maiúsculas (ex: `SP`, `RJ`, `GO`).
+
+---
+
+## 🔮 Possíveis Melhorias
+
+Futuras implementações e evoluções planejadas para o sistema:
+
+- [ ] Implementação de autenticação e controle de acesso por perfis de usuário (Ex: Operador / Administrador).
+- [ ] Integração com banco de dados relacional (ex.: PostgreSQL, MySQL ou SQLite via JPA/Hibernate).
+- [ ] Geração e exportação de relatórios em formato PDF e Excel.
+- [ ] Leitura de código de barras para dar baixa/entrada automatizada no estoque.
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido com  por **Victor Hugo Alves Vaz**.
