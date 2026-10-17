@@ -144,4 +144,4 @@ Futuras implementações e evoluções planejadas para o sistema:
 
 ## 👨‍💻 Autor
 
-Desenvolvido com  por **Victor Hugo Alves Vaz**.
+Desenvolvido por **Victor Hugo Alves Vaz**.
