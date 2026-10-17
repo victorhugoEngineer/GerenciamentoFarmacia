@@ -90,17 +90,17 @@ com.example.gerenciamentofarmacia
 └── module-info.java     # Configuração de módulos Java
 ```
 
-### 2. Compilar e construir o projeto
+### . Compilar e construir o projeto
 Certifique-se de ter o Maven instalado e execute:
 ```bash
 mvn clean compile
 ```
 
-### 3. 🚀 Como Executar
+### . 🚀 Como Executar
 
 Siga os passos abaixo para clonar, compilar e rodar o projeto em sua máquina local:
 
-### 1. Clonar o repositório
+### . Clonar o repositório
 Abra o seu terminal e execute os comandos:
 ```bash
 git clone https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git
