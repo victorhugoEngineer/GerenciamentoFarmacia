@@ -26,6 +26,7 @@ Aplicação desktop desenvolvida em **Java** e **JavaFX** para auxiliar no geren
 - [Pré-requisitos](#-pré-requisitos)
 - [Como Executar](#-como-executar)
 - [Persistência de Dados](#-persistência-de-dados)
+- [Regras de Validação e Consistência](#-regras-de-validação-consistência)
 - [Possíveis Melhorias](#-possíveis-melhorias)
 - [Autor](#-autor)
 
@@ -87,22 +88,6 @@ com.example.gerenciamentofarmacia
 ├── util/                # Utilitários de interface e caixas de diálogo (Dialogos)
 ├── FarmaciaApplication  # Classe principal de inicialização do JavaFX
 └── module-info.java     # Configuração de módulos Java
-
-# 💊 Gerenciamento de Farmácia
-
-Uma aplicação desenvolvida em Java com JavaFX e Maven para o controle e gerenciamento de estoque de medicamentos.
-
----
-
-## 🚀 Como Executar
-
-Siga os passos abaixo para clonar, compilar e rodar o projeto em sua máquina local:
-
-### 1. Clonar o repositório
-Abra o seu terminal e execute os comandos:
-```bash
-git clone https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git
-cd GerenciamentoFarmacia
 ```
 
 ### 2. Compilar e construir o projeto
@@ -111,10 +96,15 @@ Certifique-se de ter o Maven instalado e execute:
 mvn clean compile
 ```
 
-### 3. Executar a aplicação
-Para iniciar o projeto via linha de comando, utilize:
+### 3. 🚀 Como Executar
+
+Siga os passos abaixo para clonar, compilar e rodar o projeto em sua máquina local:
+
+### 1. Clonar o repositório
+Abra o seu terminal e execute os comandos:
 ```bash
-mvn javafx:run
+git clone https://github.com/victorhugoEngineer/GerenciamentoFarmacia.git
+cd GerenciamentoFarmacia
 ```
 
 > 💡 **Alternativa:** Se preferir, você pode executar a classe `FarmaciaApplication.java` diretamente por meio da sua IDE de preferência (IntelliJ, Eclipse, VS Code, etc.).
