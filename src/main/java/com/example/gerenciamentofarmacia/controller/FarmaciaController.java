@@ -26,14 +26,14 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
-/** Controlador da tela principal (antigo HelloController). */
+/** Controlador da tela principal. */
 public class FarmaciaController {
 
-    /** Caminho do CSV; pode ser trocado com -Dfarmacia.csv=outro.csv */
     private static final String CSV = System.getProperty("farmacia.csv", "dados/medicamentos.csv");
 
     private static final NumberFormat MOEDA = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -67,7 +67,9 @@ public class FarmaciaController {
         colCodigo.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCodigo()));
         colNome.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNome()));
         colPrincipioAtivo.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPrincipioAtivo()));
-        colValidade.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDataValidade().format(DATA)));
+        colValidade.setCellValueFactory(c -> new SimpleStringProperty(
+                c.getValue().getDataValidade() != null ? c.getValue().getDataValidade().format(DATA) : ""
+        ));
         colQuantidade.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getQuantidadeEstoque())));
         colPreco.setCellValueFactory(c -> new SimpleStringProperty(MOEDA.format(c.getValue().getPreco())));
         colControlado.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getControladoTexto()));
@@ -77,7 +79,7 @@ public class FarmaciaController {
         tabela.setPlaceholder(new Label("Nenhum medicamento para exibir."));
 
         try {
-            service.carregar(); // lê o CSV ao iniciar
+            service.carregar();
         } catch (IOException e) {
             Dialogos.erro("Erro ao carregar", "Não foi possível ler o arquivo de dados:\n" + e.getMessage());
         }
@@ -91,6 +93,10 @@ public class FarmaciaController {
     private void aoCadastrar() {
         try {
             Medicamento novo = lerFormulario();
+
+            // Aplica as validações de regras de negócio acumulando todos os erros
+            Validador.validar(novo);
+
             service.cadastrar(novo);
             aoLimpar();
             aoListarTodos();
@@ -105,23 +111,18 @@ public class FarmaciaController {
 
     @FXML
     public void aoExcluir() {
-        // 1. Obtém o item selecionado na tabela
         Medicamento selecionado = tabela.getSelectionModel().getSelectedItem();
 
-        // 2. Valida se o usuário realmente selecionou uma linha
         if (selecionado == null) {
             lblStatus.setText("Selecione um medicamento na tabela para excluir.");
             return;
         }
 
         try {
-            // 3. Remove via Service (que remove da memória e regrava o CSV)
             service.excluir(selecionado.getCodigo());
-
-            // 4. Atualiza a visualização da tabela e status
             aoListarTodos();
+            aoGerarRelatorio();
             lblStatus.setText("Medicamento " + selecionado.getCodigo() + " excluído com sucesso.");
-
         } catch (Exception e) {
             lblStatus.setText("Erro ao excluir medicamento: " + e.getMessage());
         }
@@ -137,7 +138,7 @@ public class FarmaciaController {
         service.buscarPorCodigo(codigo).ifPresentOrElse(m -> {
             itens.setAll(m);
             tabela.getSelectionModel().select(m);
-            status("Medicamento encontrado: " + m);
+            status("Medicamento encontrado: " + m.getNome());
         }, () -> {
             itens.clear();
             status("Nenhum medicamento com o código " + codigo + ".");
@@ -157,76 +158,90 @@ public class FarmaciaController {
                         txtCnpj, txtRazaoSocial, txtTelefone, txtEmail, txtCidade, txtEstado)
                 .forEach(TextField::clear);
         dpValidade.setValue(null);
-        dpValidade.getEditor().clear();
+        if (dpValidade.getEditor() != null) {
+            dpValidade.getEditor().clear();
+        }
         spQuantidade.getValueFactory().setValue(0);
         chkControlado.setSelected(false);
     }
 
     // ------------------------------------------------------------ Relatórios
 
-    @FXML
-    private void aoGerarRelatorio() {
-        txtRelatorio.setText(relatorios.gerarTexto(service.listar()));
-    }
-
-    @FXML
-    private void aoRelatorioVencimento() {
-        txtRelatorio.setText(relatorios.textoVencimento(service.listar()));
-    }
-
-    @FXML
-    private void aoRelatorioEstoqueBaixo() {
-        txtRelatorio.setText(relatorios.textoEstoqueBaixo(service.listar()));
-    }
-
-    @FXML
-    private void aoRelatorioFornecedor() {
-        txtRelatorio.setText(relatorios.textoPorFornecedor(service.listar()));
-    }
-
-    @FXML
-    private void aoRelatorioControlados() {
-        txtRelatorio.setText(relatorios.textoControlados(service.listar()));
-    }
+    @FXML private void aoGerarRelatorio() { txtRelatorio.setText(relatorios.gerarTexto(service.listar())); }
+    @FXML private void aoRelatorioVencimento() { txtRelatorio.setText(relatorios.textoVencimento(service.listar())); }
+    @FXML private void aoRelatorioEstoqueBaixo() { txtRelatorio.setText(relatorios.textoEstoqueBaixo(service.listar())); }
+    @FXML private void aoRelatorioFornecedor() { txtRelatorio.setText(relatorios.textoPorFornecedor(service.listar())); }
+    @FXML private void aoRelatorioControlados() { txtRelatorio.setText(relatorios.textoControlados(service.listar())); }
 
     // --------------------------------------------------------------- Apoio
 
-    /** Converte os campos da tela em objetos; erros de conversão viram ValidacaoException. */
+    /** Converte os campos da tela em objetos e trata a data digitada no teclado. */
     private Medicamento lerFormulario() throws ValidacaoException {
-        // Confirma o texto digitado no Spinner editável antes de ler o valor.
+        // Tenta pegar a data da seleção do DatePicker
+        LocalDate dataValidade = dpValidade.getValue();
+
+        // Se estiver nulo, converte o texto digitado manualmente no campo de entrada
+        if (dataValidade == null && dpValidade.getEditor() != null) {
+            String textoData = dpValidade.getEditor().getText();
+            if (textoData != null && !textoData.trim().isEmpty()) {
+                try {
+                    dataValidade = LocalDate.parse(textoData.trim(), DATA);
+                    dpValidade.setValue(dataValidade);
+                } catch (Exception e) {
+                    throw new ValidacaoException("Data de validade inválida. Utilize o formato dd/mm/aaaa.");
+                }
+            }
+        }
+
+        // Validação da Quantidade (Spinner)
         try {
             spQuantidade.increment(0);
         } catch (NumberFormatException | NullPointerException e) {
             throw new ValidacaoException("Quantidade deve ser um número inteiro.");
         }
         Integer quantidade = spQuantidade.getValue();
-        if (quantidade == null) throw new ValidacaoException("Quantidade deve ser um número inteiro.");
+        if (quantidade == null) {
+            quantidade = 0;
+        }
 
+        // Validação do Preço
         BigDecimal preco = null;
         String textoPreco = txtPreco.getText() == null ? "" : txtPreco.getText().trim();
         if (!textoPreco.isEmpty()) {
             try {
-                // "1.234,50" (vírgula = decimal, ponto = milhar) ou "12.50" (só ponto = decimal)
                 preco = new BigDecimal(textoPreco.contains(",")
                         ? textoPreco.replace(".", "").replace(",", ".")
                         : textoPreco);
             } catch (NumberFormatException e) {
-                throw new ValidacaoException("Preço deve ser um número (ex.: 12,50).");
+                throw new ValidacaoException("Preço deve ser um valor numérico válido (ex.: 12,50).");
             }
         }
 
         Fornecedor fornecedor = new Fornecedor(
-                Validador.somenteDigitos(txtCnpj.getText()), texto(txtRazaoSocial), texto(txtTelefone),
-                texto(txtEmail), texto(txtCidade), texto(txtEstado).toUpperCase());
+                Validador.somenteDigitos(txtCnpj.getText()),
+                texto(txtRazaoSocial),
+                texto(txtTelefone),
+                texto(txtEmail),
+                texto(txtCidade),
+                texto(txtEstado).toUpperCase());
 
-        return new Medicamento(texto(txtCodigo).toUpperCase(), texto(txtNome), texto(txtDescricao),
-                texto(txtPrincipioAtivo), dpValidade.getValue(), quantidade, preco,
-                chkControlado.isSelected(), fornecedor);
+        return new Medicamento(
+                texto(txtCodigo).toUpperCase(),
+                texto(txtNome),
+                texto(txtDescricao),
+                texto(txtPrincipioAtivo),
+                dataValidade,
+                quantidade,
+                preco,
+                chkControlado.isSelected(),
+                fornecedor);
     }
 
     private static String texto(TextField campo) {
         return campo.getText() == null ? "" : campo.getText().trim();
     }
 
-    private void status(String mensagem) { lblStatus.setText(mensagem); }
+    private void status(String mensagem) {
+        lblStatus.setText(mensagem);
+    }
 }

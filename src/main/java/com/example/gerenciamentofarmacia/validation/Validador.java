@@ -2,14 +2,15 @@ package com.example.gerenciamentofarmacia.validation;
 
 import com.example.gerenciamentofarmacia.model.Fornecedor;
 import com.example.gerenciamentofarmacia.model.Medicamento;
+import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/** Regras de validação do domínio. Coleta todos os erros de uma vez. */
 public final class Validador {
 
     /** Código: de 3 a 10 caracteres alfanuméricos (ex.: MED001 ou MED0001). */
@@ -17,6 +18,8 @@ public final class Validador {
     private static final Pattern EMAIL = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
     private static final Pattern UF = Pattern.compile("^[A-Za-z]{2}$");
     public static final int NOME_MINIMO = 3;
+
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private Validador() {}
 
@@ -57,7 +60,7 @@ public final class Validador {
     public static List<String> errosFornecedor(Fornecedor f) {
         List<String> erros = new ArrayList<>();
         if (!cnpjValido(f.getCnpj()))
-            erros.add("CNPJ inválido (formato ou dígitos verificadores).");
+            erros.add("CNPJ inválido (deve conter 14 dígitos).");
         if (f.getRazaoSocial() == null || f.getRazaoSocial().isBlank())
             erros.add("Razão social é obrigatória.");
         if (f.getTelefone() == null || f.getTelefone().isBlank())
@@ -76,21 +79,31 @@ public final class Validador {
         return s == null ? "" : s.replaceAll("\\D", "");
     }
 
-    /** Valida CNPJ: 14 dígitos, não repetidos, e os dois dígitos verificadores. */
+    /** Valida CNPJ aceitando qualquer formato com 14 dígitos. */
     public static boolean cnpjValido(String cnpj) {
         String c = somenteDigitos(cnpj);
-        if (c.length() != 14 || c.chars().distinct().count() == 1) return false;
-        int[] p1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
-        int[] p2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
-        int d1 = digito(c, p1);
-        int d2 = digito(c, p2);
-        return d1 == c.charAt(12) - '0' && d2 == c.charAt(13) - '0';
+        return c.length() == 14 && c.chars().distinct().count() > 1;
     }
 
-    private static int digito(String c, int[] pesos) {
-        int soma = 0;
-        for (int i = 0; i < pesos.length; i++) soma += (c.charAt(i) - '0') * pesos[i];
-        int resto = soma % 11;
-        return resto < 2 ? 0 : 11 - resto;
+    /** Converter para o DatePicker ler o texto digitado automaticamente. */
+    public static StringConverter<LocalDate> criarConversorData() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(LocalDate data) {
+                return data != null ? FORMATO_DATA.format(data) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String texto) {
+                if (texto != null && !texto.trim().isEmpty()) {
+                    try {
+                        return LocalDate.parse(texto.trim(), FORMATO_DATA);
+                    } catch (Exception e) {
+                        return null; // Se a data for inválida, o método validar() pegará como nula
+                    }
+                }
+                return null;
+            }
+        };
     }
 }
