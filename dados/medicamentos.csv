@@ -1,4 +1,3 @@
 codigo;nome;descricao;principioAtivo;dataValidade;quantidadeEstoque;preco;controlado;cnpj;razaoSocial;telefone;email;cidade;estado
-MED011;Clonazepam 2mg;Ansiolítico e anticonvulsivante de tarja preta;Clonazepam;26/10/2028;30;15.80;false;2,23E+13;DrogaMed Distribuidora de Medicamentos S/A;3133224455;atendimento@drogamed.com.br;Belo Horizonte;MG
-;;;;;;;;;;;;;
-;;;;;;;;;;;;;
+MED013;Loratadina 10mg;Antialérgico para o tratamento de sintomas de rinite alérgica e urticária;Loratadina;2028-07-14;40;16.50;true;11222333000181;Distribuidora Silva Ltda;6232001122;contato@distribuidorasilva.com;Goiânia;GO
+MED012;Cloridrato de Nafazolina 0,5mg/ml Solução Oftalmológica;Descongestionante nasal e ocular;Cloridrato de Nafazolina;2026-10-30;25;25;false;11222333000181;Pharma Central Distribuidora S/A;1140045566;vendas@pharmacentral.com.br;Florianópolis;SC
