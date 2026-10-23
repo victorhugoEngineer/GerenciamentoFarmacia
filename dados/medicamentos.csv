@@ -1,3 +1,7 @@
 codigo;nome;descricao;principioAtivo;dataValidade;quantidadeEstoque;preco;controlado;cnpj;razaoSocial;telefone;email;cidade;estado
 MED013;Loratadina 10mg;Antialérgico para o tratamento de sintomas de rinite alérgica e urticária;Loratadina;2028-07-14;40;16.50;true;11222333000181;Distribuidora Silva Ltda;6232001122;contato@distribuidorasilva.com;Goiânia;GO
 MED012;Cloridrato de Nafazolina 0,5mg/ml Solução Oftalmológica;Descongestionante nasal e ocular;Cloridrato de Nafazolina;2026-10-30;25;25;false;11222333000181;Pharma Central Distribuidora S/A;1140045566;vendas@pharmacentral.com.br;Florianópolis;SC
+MED005;Azitromicina 600mg Susp;Azitromicina;42,90;2028-09-15;18;42.90;false;11222333000181;Distribuidora Silva Ltda;6232001122;Contato@distribuidora.com;Rio de janeiro;RJ
+MED006;Dexametasona 4mg;Anti-inflamatório esterpodal ne antialérgico;Dexametasona;2029-03-30;100;8.75;true;11222333000181;Distribuidora Silva Ltda;6232001122;contato@distribuidorasilva.com;Anápolis;GO
+MED007;Acebrofina Xarope 120ml;Broncodilatador e mucolítico;Acebrofina;2028-01-12;12;26.40;true;11222333000181;Pharma Central Distribuidora S/A;1140045566;vendas@pharmacentral.com.br;Campinas;SP
+MED008;Nistatina+Óxido de Zinco;Pomada para assadura e infecções fúngicas;Nistatina;2029-06-15;35;19.99;true;11222333000181;Distribuidora Silva Ltda;6232001122;contato@distribuidorasilva.com;Porto Alegre;RS
