@@ -14,7 +14,7 @@ Aplicação desktop desenvolvida em **Java** e **JavaFX** para auxiliar no geren
 <p align="center">
  <img width="1145" height="705" alt="Captura de tela 2026-10-16 185248" src="https://github.com/user-attachments/assets/4770300a-ce66-45dc-8539-7159981c28b8" />
  <img width="1145" height="705" alt="<img width="959" height="547" alt="Captura de tela 2026-10-23 201035" src="https://github.com/user-attachments/assets/62b2eecd-9d29-489b-a92c-1f982044ca27" />
-" src="https://github.com/user-attachments/assets/4770300a-ce66-45dc-8539-7159981c28b8" />
+
 </p>
 
 ---
